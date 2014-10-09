@@ -43,8 +43,8 @@ module ExceptionLogger
     end
 
     # we log the exception and raise it again, for the normal handling.
-    def log_exception_handler(exception)
-      log_exception(exception)
+    def log_exception_handler(exception,user = nil)
+      log_exception(exception,user)
       raise exception
     end
 
@@ -54,7 +54,7 @@ module ExceptionLogger
       super
     end
 
-    def log_exception(exception)
+    def log_exception(exception,user = nil)
       deliverer = self.class.exception_data
       data = case deliverer
       when nil    then {}
@@ -62,7 +62,7 @@ module ExceptionLogger
       when Proc   then deliverer.call(self)
       end
 
-      LoggedException.create_from_exception(self, exception, data)
+      LoggedException.create_from_exception(self, exception, data, user)
     end
   end
 end

@@ -3,7 +3,7 @@ module ExceptionLogger
     self.table_name = "logged_exceptions"
     HOSTNAME = `hostname -s`.chomp
     class << self
-      def create_from_exception(controller, exception, data)
+      def create_from_exception(controller, exception, data, user = nil)
         message = exception.message.inspect
         message << "\n* Extra Data\n\n#{data}" unless data.blank?
         e = create! \
@@ -12,7 +12,7 @@ module ExceptionLogger
           :action_name     => controller.action_name,
           :message         => message,
           :backtrace       => exception.backtrace,
-          :request         => controller.request
+          :request         => (Rails.env.present? ? "Environment: #{Rails.env}" : "") + controller.request + (user.present? ? "\n* User: #{user.name} (#{user.email})" : '')
       end
 
       def host_name
