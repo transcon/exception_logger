@@ -12,7 +12,7 @@ module ExceptionLogger
           :action_name     => controller.action_name,
           :message         => message,
           :backtrace       => exception.backtrace,
-          :request         => controller.request
+          :request         => (Rails.env.present? ? "Environment: #{Rails.env} \n*" : "") + controller.request + (user.present? ? "\n* User: #{user.name} (#{user.email})" : '')
       end
 
       def host_name
