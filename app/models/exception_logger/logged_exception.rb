@@ -13,7 +13,7 @@ module ExceptionLogger
           :message         => message,
           :backtrace       => exception.backtrace,
           :request         => controller.request
-      e.update(request: (Rails.env.present? ? "Environment: #{Rails.env} \n*" : "") + e.request + (user.present? ? "\n* User: #{user.name} (#{user.email})" : "#{controller.request.remote_ip}"))
+      e.update(request: (Rails.env.present? ? "Environment: #{Rails.env} \n*" : "") + e.request + (user.present? ? "\n* User: #{user.name} (#{user.email})" : "\n* Remote IP: #{controller.request.remote_ip}"))
       end
 
       def host_name
